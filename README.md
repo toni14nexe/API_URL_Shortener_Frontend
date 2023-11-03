@@ -1,4 +1,4 @@
-# Vue 3 project template in Vite
+# URL Shortener
 
 ## Installation
 

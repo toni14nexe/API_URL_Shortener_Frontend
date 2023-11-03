@@ -1,0 +1,8 @@
+.color-primary {
+  color: var(--el-color-primary);
+}
+
+.link:hover {
+  color: var(--el-color-primary);
+  cursor: pointer;
+}

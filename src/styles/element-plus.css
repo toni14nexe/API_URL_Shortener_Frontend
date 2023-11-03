@@ -1,0 +1,7 @@
+:root {
+  --el-text-color-primary: white !important;
+}
+
+.el-notification__title {
+  color: var(--el-notification-content-color) !important;
+}

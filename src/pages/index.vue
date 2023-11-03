@@ -1,11 +1,7 @@
 <script setup>
-import MainPage from "../components/MainPage.vue"
-
+import EnterPage from "../components/index/EnterPage.vue"
 </script>
 
 <template>
-  <MainPage />
+  <EnterPage />
 </template>
-
-<style scoped>
-</style>
