@@ -1,4 +1,5 @@
 import axios from 'axios';
+import cookies from 'vue-cookies';
 
 export const $axios = axios.create({
   baseURL: import.meta.env.VITE_API_URL,
@@ -7,8 +8,7 @@ export const $axios = axios.create({
   headers: {
     common: {
       'Content-Type': 'application/json',
+      Authorization: cookies.get('authorization') || null,
     },
   },
 });
-
-// decodeURI(cookie.get('authorization'))

@@ -1,9 +1,10 @@
 <script setup>
-import HelloWorld from './pages/index.vue'
+import AuthGuard from './components/AuthGuard.vue'
+import Footer from './components/Footer.vue'
 </script>
 
 <template>
-  <router-view />
+  <AuthGuard />
 </template>
 
 <style scoped>

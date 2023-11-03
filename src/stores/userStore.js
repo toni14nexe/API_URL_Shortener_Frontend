@@ -1,23 +1,30 @@
 import { defineStore } from 'pinia';
 import { showErrorToast, showSuccessToast } from '../modules/toastMessage';
 import { $axios } from '../modules/axios';
-import cookie from 'vue-cookies';
+import cookies from 'vue-cookies';
 import { router } from '../main.js';
 
 export const useUserStore = defineStore('userStore', {
-  /* state: () => {
-    return {};
-  }, */
-
-  // For persistant values
+  state: () => {
+    return {
+      email: '',
+      username: '',
+    };
+  },
   persist: true,
 
   actions: {
     async signin(data) {
       try {
         const response = await $axios.post('/users/login', data);
-        cookie.set('authorization', `token ${response.data.user.token}`, '1h');
-        return response;
+        cookies.set(
+          'authorization',
+          `token ${response.data.user.token}`,
+          '48h'
+        );
+        this.username = response.data.user.username;
+        this.email = response.data.user.email;
+        router.push('/dashboard');
       } catch (error) {
         console.error(error);
         showErrorToast(error);
@@ -82,6 +89,32 @@ export const useUserStore = defineStore('userStore', {
         console.error(error);
         showErrorToast(error);
       }
+    },
+
+    async getAllUsers() {
+      try {
+        const response = await $axios.get('/users');
+        return response;
+      } catch (error) {
+        console.error(error);
+        showErrorToast(error);
+      }
+    },
+
+    async getUser(userId) {
+      try {
+        const response = await $axios.get(`/users/${userId}`);
+        return response;
+      } catch (error) {
+        console.error(error);
+        showErrorToast(error);
+      }
+    },
+
+    logout() {
+      localStorage.clear();
+      cookies.remove('authorization');
+      router.push('/');
     },
   },
 });
