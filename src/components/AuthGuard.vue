@@ -12,7 +12,7 @@ router.beforeEach(async (to, from) => {
     toFullPath.value = to.fullPath
     const token = cookies.get('authorization')
 
-    if(!token && to.fullPath !== '/') return '/'
+    if(!token && to.fullPath === '/dashboard') return '/'
 
     if(token && to.fullPath === '/') return '/dashboard'
 
@@ -26,14 +26,14 @@ function clearData() {
 </script>
 
 <template>
-    <el-row v-if="toFullPath === '/'" justify="center" align="middle">
-        <router-view class="logged-out" />
-    </el-row>
-    <div v-else>
+    <div v-if="toFullPath === '/dashboard'">
         <DashboardLayout>
             <router-view />
         </DashboardLayout>
     </div>
+    <el-row v-else justify="center" align="middle">
+        <router-view class="logged-out" />
+    </el-row>
     <Footer />
 </template>
 

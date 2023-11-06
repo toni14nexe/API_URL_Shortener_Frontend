@@ -2,36 +2,45 @@
 import { storeToRefs } from "pinia";
 import { onMounted, ref } from "vue"
 import { useUserStore } from '../../stores/userStore';
+import { useShortenerStore } from '../../stores/shortenerStore';
 
+const shortenerStore = useShortenerStore()
 const userStore = useUserStore()
+const { shorteners } = storeToRefs(shortenerStore)
 const { username, email } = storeToRefs(userStore)
-const signinData = ref({
-  username: '',
-  password: ''
-})
-const emits = defineEmits(['goToForgotPassword'])
+const isLoading = ref(true)
 
 onMounted(() => {
   if(!username.value || !email.value) userStore.logout()
+  else getMyShorteners()
 })
 
-function getAllUsers() {
-  userStore.getUser('6540eed797201515e2005bd4')
-}
-
-function goToForgotPassword() {
-  emits('goToForgotPassword')
+function getMyShorteners() {
+  isLoading.value = true;
+  shortenerStore.getLoggedUserShorteners().finally(() => isLoading.value = false)
 }
 </script>
 
 <template>
-  <el-space size="large" direction="vertical">
-    <el-row>{{ username }}</el-row>
-    <el-row>
-      <el-button type="primary" plain @click="getAllUsers">users</el-button>
-    </el-row>
-  </el-space>
+  <el-row class="w-100">
+    <el-col :span="11" align="end">
+      Hello, {{ username }}
+    </el-col>
+    <el-col :span="11" :offset="2" align="start">
+      <el-button type="primary" plain>Create Shortener</el-button>
+    </el-col>
+    <el-scrollbar class="scrollbar mt-1">
+      <div v-for="shortener in shorteners" :key="shortener._id">
+        <p>{{ shortener }}</p>
+      </div>
+    </el-scrollbar>
+  </el-row>
 </template>
 
 <style scoped>
+.scrollbar {
+  height: 68vh;
+  width: 100%;
+  border: 1px solid white;;
+}
 </style>

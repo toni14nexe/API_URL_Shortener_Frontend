@@ -1,5 +1,14 @@
 <script setup>
-import Logo from "../../assets/icon.png"
+import { ref } from 'vue'
+import { SwitchButton } from '@element-plus/icons-vue'
+import { useUserStore } from '../../stores/userStore'
+
+const userStore = useUserStore()
+const loginHover = ref(false)
+
+function logout() {
+    userStore.logout()
+}
 </script>
 
 <template>
@@ -11,8 +20,13 @@ import Logo from "../../assets/icon.png"
             <el-col :span="12" align="start">
                 <h2 class="header-text">URL Shortener</h2>
             </el-col>
-            <el-col :span="8" align="right" class="fix-logout">
-                <h3>logout</h3>
+            <el-col :span="8" align="right">
+                <el-row justify="end">
+                    <span class="fix-logout-text link" @click="logout">
+                        <SwitchButton class="fix-logout-icon" />
+                        logout
+                    </span>
+                </el-row>
             </el-col>
         </el-row>
     </div>
@@ -33,9 +47,13 @@ import Logo from "../../assets/icon.png"
 .fix-avatar {
     margin-top: 7px;
 }
-
-.fix-logout {
-    margin-top: 7px;
+.fix-logout-text {
+    margin-top: -5px;
     padding-right: 2rem;
+}
+.fix-logout-icon {
+    width: 18px;
+    margin-top: 28px;
+    padding-right: 0.2rem;
 }
 </style>

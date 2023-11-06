@@ -12,5 +12,6 @@ import Header from "./Header.vue"
 <style scoped>
 .slot {
     padding-top: 7rem;
+    display: flex;
 }
 </style>
