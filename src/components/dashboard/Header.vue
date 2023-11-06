@@ -18,7 +18,7 @@ function logout() {
                 <el-avatar :size="60" shape="square" src="https://static.thenounproject.com/png/4778723-200.png" />
             </el-col>
             <el-col :span="12" align="start">
-                <h2 class="header-text">URL Shortener</h2>
+                <h2 class="header-text color-primary">URL Shortener</h2>
             </el-col>
             <el-col :span="8" align="right">
                 <el-row justify="end">

@@ -1,5 +1,11 @@
 .color-primary {
   color: var(--el-color-primary);
+  transition: 200ms ease;
+}
+
+.hover-pointer:hover {
+  cursor: pointer;
+  transition: 200ms ease;
 }
 
 .link:hover {

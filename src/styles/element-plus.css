@@ -5,3 +5,28 @@
 .el-notification__title {
   color: var(--el-notification-content-color) !important;
 }
+
+.el-dialog {
+  --el-bg-color: var(--color-background);
+  max-width: 750px;
+}
+
+.el-avatar {
+  --el-avatar-bg-color: var(--el-color-primary) !important;
+}
+
+.el-input {
+  --el-input-bg-color: var(--color-light-background) !important;
+  --el-input-text-color: white !important;
+  --el-input-border-color: var(--color-second-background) !important;
+  min-width: 250px;
+}
+
+.el-dialog__body {
+  --el-text-color-regular: white;
+  word-break: break-all;
+}
+
+.el-popper {
+  --el-bg-color: var(--color-second-background);
+}

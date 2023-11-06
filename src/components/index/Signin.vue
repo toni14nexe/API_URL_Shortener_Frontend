@@ -30,10 +30,10 @@ function goToForgotPassword() {
       <el-input v-model="signinData.password" type="password" @keyup.enter="signin" placeholder="Password" />
     </el-row>
     <el-row>
-      <el-button type="primary" plain @click="signin">Sign in</el-button>
+      <el-button type="primary" @click="signin">Sign in</el-button>
     </el-row>
     <el-row>
-      <span class="link" to="/forgot-password" @click="goToForgotPassword">Forgot password?</span>
+      <span class="link" @click="goToForgotPassword">Forgot password?</span>
     </el-row>
   </el-space>
 </template>

@@ -38,7 +38,7 @@ const btnDisabled = computed(() => {
             <el-input v-model="password.confirmation" type="password" @keyup.enter="resetPassword" placeholder="Confirm Password" />
         </el-row>
         <el-row>
-            <el-button type="primary" plain @click="resetPassword" :disabled="btnDisabled">Sign up</el-button>
+            <el-button type="primary" @click="resetPassword" :disabled="btnDisabled">Sign up</el-button>
         </el-row>
     </el-space>
     <el-space v-else size="large" direction="vertical">
