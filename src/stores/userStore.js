@@ -22,8 +22,8 @@ export const useUserStore = defineStore('userStore', {
           `token ${response.data.user.token}`,
           '48h'
         );
-        this.username = response.data.user.username;
-        this.email = response.data.user.email;
+        this.username = await response.data.user.username;
+        this.email = await response.data.user.email;
         router.push('/dashboard');
       } catch (error) {
         console.error(error);

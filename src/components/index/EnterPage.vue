@@ -9,7 +9,10 @@ const tab = ref('signin')
 
 <template>
   <el-space size="large" direction="vertical">
-    <h2>URL Shortener</h2>
+    <el-space size="small" direction="horizontal">
+      <el-avatar :size="30" shape="square" src="https://static.thenounproject.com/png/4778723-200.png" />
+      <h2 class="color-primary">URL Shortener</h2>
+    </el-space>
     <el-row>
       <el-tabs v-model="tab">
         <el-tab-pane label="Sign in" name="signin" />
