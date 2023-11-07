@@ -11,6 +11,7 @@ import {
   InfoFilled,
 } from '@element-plus/icons-vue';
 import { showSuccessToast } from '../../modules/toastMessage';
+import debounce from 'lodash/debounce';
 
 const shortenerStore = useShortenerStore();
 const userStore = useUserStore();
@@ -28,6 +29,7 @@ const shortenerData = ref({
   url: '',
   shortValue: '',
 });
+const searchValue = ref('');
 
 onMounted(() => {
   if (!username.value || !email.value) userStore.logout();
@@ -37,7 +39,6 @@ onMounted(() => {
 function getMyShorteners() {
   isLoading.value = true;
   shortenerStore.getLoggedUserShorteners().finally(() => {
-    isLoading.value = false;
     shorteners.value.forEach((shortener) => {
       if (shortener.url.length > 70)
         shortener.displayValue = `${shortener.url.slice(0, 70)}...`;
@@ -46,6 +47,15 @@ function getMyShorteners() {
       if (shortener1.shortValue < shortener2.shortValue) return -1;
       else return 1;
     });
+    if (searchValue.value)
+      shorteners.value = shorteners.value.filter((shortener) => {
+        if (
+          shortener.url.includes(searchValue.value) ||
+          shortener.shortValue.includes(searchValue.value)
+        )
+          return shortener;
+      });
+    isLoading.value = false;
   });
 }
 
@@ -110,18 +120,27 @@ function copy(text) {
   navigator.clipboard.writeText(text);
   showSuccessToast('Succesfully copied');
 }
+
+const getSearch = debounce(async () => getMyShorteners(), 400);
 </script>
 
 <template>
   <el-row class="w-100">
-    <el-col :span="8" />
-    <el-col :span="8" align="center">
+    <el-col :span="8" align="start">
       Hello, <span class="color-primary">{{ username }}</span>
     </el-col>
-    <el-col :span="8" align="right">
-      <el-button type="primary" @click="showDialog.create = true"
-        >Create Shortener</el-button
-      >
+    <el-col :span="16" align="right">
+      <el-space size="large">
+        <el-input
+          class="search"
+          v-model="searchValue"
+          placeholder="Search..."
+          @input="getSearch"
+        />
+        <el-button type="primary" @click="showDialog.create = true">
+          Create Shortener
+        </el-button>
+      </el-space>
     </el-col>
     <el-scrollbar
       class="scrollbar mt-1"
@@ -408,5 +427,8 @@ function copy(text) {
 }
 .color-danger {
   color: var(--el-color-danger);
+}
+.search {
+  max-width: max-content;
 }
 </style>
