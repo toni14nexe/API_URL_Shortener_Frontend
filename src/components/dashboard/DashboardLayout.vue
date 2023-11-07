@@ -1,17 +1,17 @@
 <script setup>
-import Header from "./Header.vue"
+import Header from './Header.vue';
 </script>
 
 <template>
-    <Header />
-    <div class="slot">
-        <slot />
-    </div>
+  <Header />
+  <div class="slot">
+    <slot />
+  </div>
 </template>
 
 <style scoped>
 .slot {
-    padding-top: 7rem;
-    display: flex;
+  padding-top: 7rem;
+  display: flex;
 }
 </style>

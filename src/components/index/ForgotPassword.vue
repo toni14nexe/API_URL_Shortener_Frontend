@@ -1,27 +1,33 @@
 <script setup>
-import { ref } from "vue"
+import { ref } from 'vue';
 import { useUserStore } from '../../stores/userStore';
 
-const userStore = useUserStore()
-const emits = defineEmits(['goToForgotPassword'])
-const email = ref('')
-const mainView = ref(true)
+const userStore = useUserStore();
+const emits = defineEmits(['goToForgotPassword']);
+const email = ref('');
+const mainView = ref(true);
 
 function sendResetEmail() {
-    userStore.resetPasswordRequest(email.value).then(() => mainView.value = false)
+  userStore
+    .resetPasswordRequest(email.value)
+    .then(() => (mainView.value = false));
 }
 </script>
 
 <template>
   <el-space v-if="mainView" size="large" direction="vertical">
-    <el-row class="color-primary">
-      Password reset
+    <el-row class="color-primary"> Password reset </el-row>
+    <el-row>
+      <el-input
+        v-model="email"
+        @keyup.enter="sendResetEmail"
+        placeholder="Email"
+      />
     </el-row>
     <el-row>
-      <el-input v-model="email" @keyup.enter="sendResetEmail" placeholder="Email" />
-    </el-row>
-    <el-row>
-      <el-button type="primary" plain @click="sendResetEmail">Send email</el-button>
+      <el-button type="primary" plain @click="sendResetEmail"
+        >Send email</el-button
+      >
     </el-row>
   </el-space>
   <el-space v-else size="large" direction="vertical">
@@ -31,5 +37,4 @@ function sendResetEmail() {
   </el-space>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>
