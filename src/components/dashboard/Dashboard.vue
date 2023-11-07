@@ -3,7 +3,7 @@ import { storeToRefs } from "pinia";
 import { onMounted, ref, computed } from "vue"
 import { useUserStore } from '../../stores/userStore';
 import { useShortenerStore } from '../../stores/shortenerStore';
-import { Edit, Delete, Link, DocumentCopy } from '@element-plus/icons-vue'
+import { Edit, Delete, Link, DocumentCopy, InfoFilled } from '@element-plus/icons-vue'
 import { showSuccessToast } from "../../modules/toastMessage";
 
 const shortenerStore = useShortenerStore()
@@ -14,7 +14,8 @@ const isLoading = ref(true)
 const showDialog = ref({
   create: false,
   edit: false,
-  delete: false
+  delete: false,
+  info: false
 })
 const shortenerData = ref({
   id: '',
@@ -69,6 +70,7 @@ function deleteShortener() {
 function openDialog(shortener, option) {
   shortenerData.value = shortener
   if(option === 'delete') showDialog.value.delete = true
+  else if(option === 'info') showDialog.value.info = true
   else {
     showDialog.value.edit = true
     shortenerData.value = {
@@ -82,7 +84,8 @@ function closeDialog() {
   showDialog.value = {
     create: false,
     edit: false,
-    delete: false
+    delete: false,
+    info: false
   }
   shortenerData.value = {
     id: '',
@@ -127,6 +130,9 @@ function copy(text) {
                 </el-tooltip>
                 <el-tooltip content="Edit shortener" placement="top-start">
                   <el-icon :size="22" class="not-delete-icon" @click="openDialog(shortener, 'edit')"><Edit /></el-icon>
+                </el-tooltip>
+                <el-tooltip content="Show info" placement="top-start">
+                  <el-icon :size="22" class="not-delete-icon" @click="openDialog(shortener, 'info')"><InfoFilled /></el-icon>
                 </el-tooltip>
                 <el-tooltip content="Open URL in new tab" placement="top-start">
                   <el-icon :size="22" class="not-delete-icon" @click="openURL(shortener.url)"><Link /></el-icon>
@@ -241,6 +247,33 @@ function copy(text) {
         <div>
           <el-row justify="center"><span class="color-primary">URL</span></el-row>
           <el-row justify="center"><span>{{ shortenerData.displayValue || shortenerData.url }}</span></el-row>
+        </div>
+      </el-space>
+    <template #footer>
+      <el-button type="primary" @click="closeDialog">Cancel</el-button>
+      <el-button type="danger" @click="deleteShortener">Delete</el-button>
+    </template>
+  </el-dialog>
+
+  <!-- INFO shortener dialog -->
+  <el-dialog 
+    v-model="showDialog.info"
+    destroy-on-close
+    :show-close="false"
+    :close-on-click-modal="false"
+    :align-center="true"
+  >
+    <template #header>
+      <h3 class="color-primary">Shortener info</h3>
+    </template>
+      <el-space size="large" direction="vertical">
+        <div>
+          <el-row justify="center"><span class="color-primary">Shorthand</span></el-row>
+          <el-row justify="center"><span>{{ shortenerData.shortValue }}</span></el-row>
+        </div>
+        <div>
+          <el-row justify="center"><span class="color-primary">URL</span></el-row>
+          <el-row justify="center"><span>{{ shortenerData.url }}</span></el-row>
         </div>
       </el-space>
     <template #footer>
