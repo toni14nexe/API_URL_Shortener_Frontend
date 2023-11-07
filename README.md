@@ -1,5 +1,9 @@
 # URL Shortener
 
+## About application
+
+This frontend application was created as an extension to the exercise of building a Node.js application with Express named [URL Shortener API](https://github.com/toni14nexe/API_URL_shortener) (backend repository). The goal of the application is to, through legitimate registration, email validation, password reset via email, and login using JWT tokens, enable users to add their own shorteners, i.e. URL shortcuts.
+
 ## Installation
 
 After cloning project install dependencies.
