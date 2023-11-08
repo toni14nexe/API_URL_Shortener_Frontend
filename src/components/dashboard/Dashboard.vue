@@ -390,7 +390,6 @@ const getSearch = debounce(async () => getMyShorteners(), 400);
     </el-space>
     <template #footer>
       <el-button type="primary" @click="closeDialog">Cancel</el-button>
-      <el-button type="danger" @click="deleteShortener">Delete</el-button>
     </template>
   </el-dialog>
 </template>
