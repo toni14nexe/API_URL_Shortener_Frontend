@@ -6,14 +6,14 @@ const userStore = useUserStore();
 const emits = defineEmits(['goToForgotPassword']);
 const email = ref('');
 const mainView = ref(true);
-const btnLoading = ref(false)
+const btnLoading = ref(false);
 
 function sendResetEmail() {
-  btnLoading.value = true
+  btnLoading.value = true;
   userStore
     .resetPasswordRequest(email.value)
     .then(() => (mainView.value = false))
-    .finally(() => btnLoading.value = false)
+    .finally(() => (btnLoading.value = false));
 }
 </script>
 
@@ -28,7 +28,11 @@ function sendResetEmail() {
       />
     </el-row>
     <el-row>
-      <el-button type="primary" plain @click="sendResetEmail" :loading="btnLoading"
+      <el-button
+        type="primary"
+        plain
+        @click="sendResetEmail"
+        :loading="btnLoading"
         >Send email</el-button
       >
     </el-row>

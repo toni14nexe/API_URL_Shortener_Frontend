@@ -10,12 +10,12 @@ const userData = ref({
   passwordConfirmation: '',
 });
 const mainView = ref(true);
-const btnLoading = ref(false)
+const btnLoading = ref(false);
 const emailRegex =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 function signup() {
-  btnLoading.value = true
+  btnLoading.value = true;
   if (!btnDisabled.value) {
     if (userData.value.password === userData.value.passwordConfirmation)
       if (emailRegex.test(userData.value.email))
@@ -26,7 +26,6 @@ function signup() {
           if (userData.value.password.length > 8)
             userStore.signup(userData.value).then((response) => {
               if (response) mainView.value = false;
-              
             });
           else userData.value.password = '';
         else userData.value.username = '';
@@ -35,7 +34,7 @@ function signup() {
       userData.value.password = '';
       userData.value.passwordConfirmation = '';
     }
-    btnLoading.value = false
+    btnLoading.value = false;
   }
 }
 
@@ -86,7 +85,12 @@ const btnDisabled = computed(() => {
       />
     </el-row>
     <el-row>
-      <el-button type="primary" plain @click="signup" :disabled="btnDisabled" :loading="btnLoading"
+      <el-button
+        type="primary"
+        plain
+        @click="signup"
+        :disabled="btnDisabled"
+        :loading="btnLoading"
         >Sign up</el-button
       >
     </el-row>

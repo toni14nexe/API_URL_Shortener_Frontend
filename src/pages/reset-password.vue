@@ -8,14 +8,17 @@ const password = ref({
   password: '',
   confirmation: '',
 });
-const btnLoading = ref(false)
+const btnLoading = ref(false);
 
 function resetPassword() {
-  btnLoading.value = true
+  btnLoading.value = true;
   if (!btnDisabled.value)
-    userStore.resetPassword(password.value.password).then((response) => {
-      if (response.data?.debt) mainView.value = false;
-    }).finally(() => btnLoading.value = false)
+    userStore
+      .resetPassword(password.value.password)
+      .then((response) => {
+        if (response.data?.debt) mainView.value = false;
+      })
+      .finally(() => (btnLoading.value = false));
 }
 
 const btnDisabled = computed(() => {

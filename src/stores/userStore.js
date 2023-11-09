@@ -24,7 +24,8 @@ export const useUserStore = defineStore('userStore', {
         );
         this.username = await response.data.user.username;
         this.email = await response.data.user.email;
-        router.push('/dashboard');
+        if (cookies.get('authorization') && this.username && this.email)
+          return true;
       } catch (error) {
         console.error(error);
         showErrorToast(error);
@@ -112,6 +113,8 @@ export const useUserStore = defineStore('userStore', {
     },
 
     logout() {
+      this.username = '';
+      this.email = '';
       localStorage.clear();
       cookies.remove('authorization');
       router.push('/');

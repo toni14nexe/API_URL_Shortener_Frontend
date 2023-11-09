@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue';
+import { router } from '../../main';
 import { useUserStore } from '../../stores/userStore';
 
 const userStore = useUserStore();
@@ -7,12 +8,17 @@ const signinData = ref({
   username: '',
   password: '',
 });
-const btnLoading = ref(false)
+const btnLoading = ref(false);
 const emits = defineEmits(['goToForgotPassword']);
 
 function signin() {
-  btnLoading.value = true
-  userStore.signin(signinData.value).finally(() => btnLoading.value = false)
+  btnLoading.value = true;
+  userStore
+    .signin(signinData.value)
+    .then((response) => {
+      if (response) router.push('/dashboard');
+    })
+    .finally(() => (btnLoading.value = false));
 }
 
 function goToForgotPassword() {
@@ -39,7 +45,9 @@ function goToForgotPassword() {
       />
     </el-row>
     <el-row>
-      <el-button type="primary" @click="signin" :loading="btnLoading">Sign in</el-button>
+      <el-button type="primary" @click="signin" :loading="btnLoading"
+        >Sign in</el-button
+      >
     </el-row>
     <el-row>
       <span class="link" @click="goToForgotPassword">Forgot password?</span>
