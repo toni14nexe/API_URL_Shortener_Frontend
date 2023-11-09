@@ -30,6 +30,7 @@ const shortenerData = ref({
   shortValue: '',
 });
 const searchValue = ref('');
+const btnLoading = ref(false)
 
 onMounted(() => {
   if (!username.value || !email.value) userStore.logout();
@@ -60,6 +61,7 @@ function getMyShorteners() {
 }
 
 function createNewShortener() {
+  btnLoading.value = true
   shortenerStore
     .createNewShortener({
       url: shortenerData.value.url,
@@ -68,21 +70,24 @@ function createNewShortener() {
     .then(() => {
       getMyShorteners();
       closeDialog();
-    });
+    })
+    .finally(() => btnLoading.value = false)
 }
 
 function editShortener() {
+  btnLoading.value = true
   shortenerStore.editShortener(shortenerData.value).then(() => {
     getMyShorteners();
     closeDialog();
-  });
+  }).finally(() => btnLoading.value = false)
 }
 
 function deleteShortener() {
+  btnLoading.value = true
   shortenerStore.deleteShortener(shortenerData.value._id).then(() => {
     getMyShorteners();
     closeDialog();
-  });
+  }).finally(() => btnLoading.value = false)
 }
 
 function openDialog(shortener, option) {
@@ -277,7 +282,7 @@ const getSearch = debounce(async () => getMyShorteners(), 400);
     </el-space>
     <template #footer>
       <el-button type="danger" @click="closeDialog">Cancel</el-button>
-      <el-button type="primary" @click="createNewShortener">Create</el-button>
+      <el-button type="primary" @click="createNewShortener" :loading="btnLoading">Create</el-button>
     </template>
   </el-dialog>
 
@@ -316,7 +321,7 @@ const getSearch = debounce(async () => getMyShorteners(), 400);
     </el-space>
     <template #footer>
       <el-button type="danger" @click="closeDialog">Cancel</el-button>
-      <el-button type="primary" @click="editShortener">Edit</el-button>
+      <el-button type="primary" @click="editShortener" :loading="btnLoading">Edit</el-button>
     </template>
   </el-dialog>
 
@@ -357,7 +362,7 @@ const getSearch = debounce(async () => getMyShorteners(), 400);
     </el-space>
     <template #footer>
       <el-button type="primary" @click="closeDialog">Cancel</el-button>
-      <el-button type="danger" @click="deleteShortener">Delete</el-button>
+      <el-button type="danger" @click="deleteShortener" :loading="btnLoading">Delete</el-button>
     </template>
   </el-dialog>
 

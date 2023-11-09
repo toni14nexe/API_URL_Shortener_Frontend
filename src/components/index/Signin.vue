@@ -7,10 +7,12 @@ const signinData = ref({
   username: '',
   password: '',
 });
+const btnLoading = ref(false)
 const emits = defineEmits(['goToForgotPassword']);
 
 function signin() {
-  userStore.signin(signinData.value);
+  btnLoading.value = true
+  userStore.signin(signinData.value).finally(() => btnLoading.value = false)
 }
 
 function goToForgotPassword() {
@@ -37,7 +39,7 @@ function goToForgotPassword() {
       />
     </el-row>
     <el-row>
-      <el-button type="primary" @click="signin">Sign in</el-button>
+      <el-button type="primary" @click="signin" :loading="btnLoading">Sign in</el-button>
     </el-row>
     <el-row>
       <span class="link" @click="goToForgotPassword">Forgot password?</span>

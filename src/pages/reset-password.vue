@@ -8,12 +8,14 @@ const password = ref({
   password: '',
   confirmation: '',
 });
+const btnLoading = ref(false)
 
 function resetPassword() {
+  btnLoading.value = true
   if (!btnDisabled.value)
     userStore.resetPassword(password.value.password).then((response) => {
       if (response.data?.debt) mainView.value = false;
-    });
+    }).finally(() => btnLoading.value = false)
 }
 
 const btnDisabled = computed(() => {
@@ -55,7 +57,7 @@ const btnDisabled = computed(() => {
     </el-row>
     <el-row>
       <el-button type="primary" @click="resetPassword" :disabled="btnDisabled"
-        >Sign up</el-button
+        >Reset password</el-button
       >
     </el-row>
   </el-space>
