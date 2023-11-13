@@ -20,6 +20,16 @@ export const useShortenerStore = defineStore('shortenerStore', {
       }
     },
 
+    async getShortener(shortenerId) {
+      try {
+        const response = await $axios.get(`/shorteners/${shortenerId}`);
+        return response;
+      } catch (error) {
+        console.error(error);
+        showErrorToast(error);
+      }
+    },
+
     async createNewShortener(shortener) {
       try {
         await $axios.post('/shorteners', shortener);
