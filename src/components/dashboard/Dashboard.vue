@@ -1,6 +1,6 @@
 <script setup>
 import { storeToRefs } from 'pinia';
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref } from 'vue';
 import { useUserStore } from '../../stores/userStore';
 import { useShortenerStore } from '../../stores/shortenerStore';
 import {
@@ -9,10 +9,12 @@ import {
   Link,
   DocumentCopy,
   InfoFilled,
+  Share,
 } from '@element-plus/icons-vue';
 import { showSuccessToast } from '../../modules/toastMessage';
 import debounce from 'lodash/debounce';
 
+const baseURL = import.meta.env.VITE_BASE_URL;
 const shortenerStore = useShortenerStore();
 const userStore = useUserStore();
 const { shorteners } = storeToRefs(shortenerStore);
@@ -41,8 +43,8 @@ function getMyShorteners() {
   isLoading.value = true;
   shortenerStore.getLoggedUserShorteners().finally(() => {
     shorteners.value.forEach((shortener) => {
-      if (shortener.url.length > 70)
-        shortener.displayValue = `${shortener.url.slice(0, 70)}...`;
+      if (shortener.url.length > 40)
+        shortener.displayValue = `${shortener.url.slice(0, 40)}...`;
     });
     shorteners.value.sort((shortener1, shortener2) => {
       if (shortener1.shortValue < shortener2.shortValue) return -1;
@@ -123,8 +125,8 @@ function closeDialog() {
   };
 }
 
-function openURL(url) {
-  window.open(url, '_blank');
+function openURL(shortenerId) {
+  window.open(`${baseURL}/${shortenerId}`, '_blank');
 }
 
 function copy(text) {
@@ -133,6 +135,11 @@ function copy(text) {
 }
 
 const getSearch = debounce(async () => getMyShorteners(), 400);
+
+function copyRedirectionURL(shortenerId) {
+  navigator.clipboard.writeText(`${baseURL}/${shortenerId}`);
+  showSuccessToast('Succesfully copied');
+}
 </script>
 
 <template>
@@ -199,27 +206,51 @@ const getSearch = debounce(async () => getMyShorteners(), 400);
                   <el-icon
                     :size="22"
                     class="not-delete-icon"
-                    @click="openURL(shortener.url)"
+                    @click="openURL(shortener._id)"
                     ><Link
+                  /></el-icon>
+                </el-tooltip>
+                <el-tooltip
+                  content="Copy redirection URL"
+                  placement="top-start"
+                >
+                  <el-icon
+                    :size="22"
+                    class="not-delete-icon"
+                    @click="copyRedirectionURL(shortener._id)"
+                    ><Share
                   /></el-icon>
                 </el-tooltip>
               </el-space>
             </el-row>
             <el-space size="large" direction="vertical">
+              <div>
+                <el-row justify="center" class="color-primary mt-1"
+                  ><b>{{ shortener.shortValue }}</b></el-row
+                >
+              </div>
               <el-tooltip placement="top-start">
                 <template #content>
                   <el-row
                     class="hover-pointer"
-                    @click="copy(shortener.shortValue)"
+                    @click="copyRedirectionURL(shortener._id)"
                     ><el-space size="small">
                       <el-icon :size="20"><DocumentCopy /></el-icon>
-                      <span>Copy shorthand</span>
+                      <span>Copy redirection URL</span>
                     </el-space></el-row
                   >
                 </template>
-                <div class="hover-pointer" @click="copy(shortener.shortValue)">
-                  <el-row justify="center" class="color-primary mt-1"
-                    ><b>{{ shortener.shortValue }}</b></el-row
+                <div
+                  class="hover-pointer"
+                  @click="copyRedirectionURL(shortener._id)"
+                >
+                  <el-row justify="center"
+                    ><span class="color-primary"
+                      >Short (redirection) URL</span
+                    ></el-row
+                  >
+                  <el-row justify="center"
+                    ><span>{{ `${baseURL}/${shortener._id}` }}</span></el-row
                   >
                 </div>
               </el-tooltip>
@@ -427,7 +458,7 @@ const getSearch = debounce(async () => getMyShorteners(), 400);
   padding: var(--spacing-1);
   border-radius: calc(var(--spacing-1));
   transition: 200ms ease;
-  height: 200px;
+  height: 235px;
   word-break: break-all;
 }
 .card:hover {

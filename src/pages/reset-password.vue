@@ -16,7 +16,7 @@ function resetPassword() {
     userStore
       .resetPassword(password.value.password)
       .then((response) => {
-        if (response.data?.debt) mainView.value = false;
+        if (response.data?.user) mainView.value = false;
       })
       .finally(() => (btnLoading.value = false));
 }
